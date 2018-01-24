@@ -1,0 +1,15 @@
+#!/bin/bash
+cd
+cd Firmware2
+source Tools/setup_gazebo.bash $(pwd) $(pwd)/build_posix_sitl_lpe && export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd) && export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo
+read -p "custom launch [Y/n] : " choice
+if [ $choice == "n" ];then
+	roslaunch px4 mavros_posix_sitl.launch &
+	sleep 15
+	cd ~/odroid_ws
+	source devel/setup.bash
+	roslaunch missionpkg missionpkg.launch
+else
+	read -p "enter the custom file you want to launch " launch
+	roslaunch px4 $launch
+fi
